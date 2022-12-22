@@ -1,0 +1,15 @@
+version: "3.6"
+
+services:
+
+  telegram_ms_worker:
+    # Building the image
+    <<: &telegram_ms_worker
+      image: "telegram_ms_worker:latest"
+      build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - "10006:10006"
+    env_file: 
+      - env_file
