@@ -30,10 +30,12 @@ def send_message(update, context):
     if "status" in res and res["status"]:
         id_user = res["user_telegram"]["id_user"]
         res_user = get(
-            f"{WIFEYE_USER_MANAGER}/user?id={id_user}").json()
-        username = res_user["name"] + " " + res_user["surname"]
-        update.message.reply_text(
-            f"Congratulations {username} now you are associated with telegram bot.")
+            f"{WIFEYE_USER_MANAGER}/user?id={id_user}")
+        if res_user.ok:
+            user = res_user.json()
+            username = user["name"] + " " + user["surname"]
+            update.message.reply_text(
+                f"Congratulations {username}, now you are associated with telegram bot.")
     else:
         update.message.reply_text(f"Incorrect temporal code.")
 
