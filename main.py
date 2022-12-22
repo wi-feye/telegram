@@ -21,12 +21,14 @@ def help(update, context):
 
 
 def send_message(update, context):
-    msg = update.message.text
-    chatid = update.effective_chat.id
-    res = get(
-        f"{WIFEYE_DATA_MANAGER}/telegram/chatid_user?chatidt={chatid}&mpcode={msg}").json()
-    if res["status"] == True:
-        id_user = res["id_user"]
+    body = {
+        "chatid": update.effective_chat.id,
+        "tmpcode": update.message.text
+    }
+    res = post(
+        f"{WIFEYE_DATA_MANAGER}/api/user_telegram/add_chatid", json=body).json()
+    if "status" in res and res["status"]:
+        id_user = res["user_telegram"]["id_user"]
         res_user = get(
             f"{WIFEYE_USER_MANAGER}/user?id={id_user}").json()
         username = res_user["name"] + " " + res_user["surname"]
